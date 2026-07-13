@@ -15,7 +15,16 @@
 use std::thread;
 
 pub fn sum(v: Vec<i32>) -> i32 {
-    todo!()
+    let mut v = v.clone();
+    let v2 = v.split_off(v.len() / 2);
+
+    let handle = thread::spawn(move || v2.iter().sum::<i32>());
+
+    let total = v.iter().sum::<i32>();
+
+    let sum2 = handle.join().expect("worker thread panicked");
+
+    total + sum2
 }
 
 #[cfg(test)]
